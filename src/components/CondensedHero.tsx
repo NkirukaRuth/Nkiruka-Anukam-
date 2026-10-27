@@ -153,27 +153,28 @@ export const CondensedHero: React.FC<CondensedHeroProps> = ({ onExploreClick }) 
       label: 'Campaign Performance',
       value: '9.20x',
       unit: 'ROAS',
-      detail: 'Modeled from ₦2,784 CPA efficiency',
+      detail: 'Modeled from CPA efficiency',
       subtext: 'Ad spend tracking & revenue modeling'
     }
   ];
 
   return (
-    <section id="about" className="relative pt-10 pb-16 sm:pt-16 sm:pb-22 border-b border-stone-200/80 bg-[#FAF6F0]">
-      {/* Subtle warm ambient background glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl pointer-events-none" />
+    <section id="about" className="relative pt-10 pb-16 sm:pt-16 sm:pb-22 border-b border-stone-200/80 bg-[#FAF6F0] overflow-hidden">
+      {/* Subtle warm ambient background glow & floating decorative elements */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[34rem] bg-gradient-to-tr from-amber-300/20 via-amber-100/15 to-transparent rounded-full blur-3xl pointer-events-none animate-ambient-glow" />
+      <div className="absolute bottom-6 right-6 w-80 h-80 bg-amber-200/15 rounded-full blur-3xl pointer-events-none animate-pulse-ring" />
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
           {/* Left Column: Moving DP (Floating Animation) & Icon Quick Links */}
-          <div className="lg:col-span-4 flex flex-col items-center lg:items-start">
+          <div className="lg:col-span-4 flex flex-col items-center lg:items-start animate-fade-in-up">
             <div className="relative group">
               {/* Animated pulsating halo behind DP */}
               <div className="absolute -inset-2 rounded-3xl bg-gradient-to-tr from-amber-400/30 via-amber-200/20 to-transparent blur-md animate-pulse-ring" />
 
-              {/* Floating DP Container */}
-              <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-2xl overflow-hidden border-2 border-amber-500/20 shadow-xl bg-stone-100 animate-float-dp transition-all hover:scale-105 duration-300">
+              {/* Floating DP Container with Smooth Zoom */}
+              <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-2xl overflow-hidden border-2 border-amber-500/25 shadow-xl bg-stone-100 animate-float-dp transition-all hover:scale-105 duration-300">
                 <img
                   src="/assets/ruth_headshot.png"
                   alt="Anukam Ruth Nkiruka"
@@ -198,7 +199,7 @@ export const CondensedHero: React.FC<CondensedHeroProps> = ({ onExploreClick }) 
                 <span>Lagos, Nigeria · UTC+1 · Remote Worldwide</span>
               </div>
 
-              {/* Clean Icon Action Bar: Email, WhatsApp, LinkedIn */}
+              {/* Clean Icon Action Bar: Email, WhatsApp, LinkedIn with Hover Lift */}
               <div className="flex items-center gap-2 pt-1">
                 {/* Email Icon - Opens Gmail directly */}
                 <a
@@ -206,7 +207,7 @@ export const CondensedHero: React.FC<CondensedHeroProps> = ({ onExploreClick }) 
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Open Gmail to write to Ruth"
-                  className="p-2.5 rounded-xl bg-white border border-stone-200 text-stone-700 hover:text-amber-700 hover:border-amber-400 hover:shadow-sm active:scale-95 transition-all"
+                  className="p-2.5 rounded-xl bg-white border border-stone-200 text-stone-700 hover:text-amber-700 hover:border-amber-400 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all"
                   aria-label="Open Gmail to write to Ruth"
                 >
                   <Mail className="w-4 h-4" />
@@ -218,7 +219,7 @@ export const CondensedHero: React.FC<CondensedHeroProps> = ({ onExploreClick }) 
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Chat on WhatsApp"
-                  className="p-2.5 rounded-xl bg-white border border-stone-200 text-[#25D366] hover:border-emerald-400 hover:shadow-sm active:scale-95 transition-all"
+                  className="p-2.5 rounded-xl bg-white border border-stone-200 text-[#25D366] hover:border-emerald-400 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all"
                   aria-label="Chat on WhatsApp"
                 >
                   <MessageSquare className="w-4 h-4 fill-current" />
@@ -230,7 +231,7 @@ export const CondensedHero: React.FC<CondensedHeroProps> = ({ onExploreClick }) 
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Connect on LinkedIn"
-                  className="p-2.5 rounded-xl bg-white border border-stone-200 text-[#0077B5] hover:border-sky-400 hover:shadow-sm active:scale-95 transition-all"
+                  className="p-2.5 rounded-xl bg-white border border-stone-200 text-[#0077B5] hover:border-sky-400 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all"
                   aria-label="Connect on LinkedIn"
                 >
                   <Linkedin className="w-4 h-4 fill-current" />
@@ -245,14 +246,14 @@ export const CondensedHero: React.FC<CondensedHeroProps> = ({ onExploreClick }) 
           </div>
 
           {/* Right Column: Bio, Co-Founder Assistance & Delivering Vibe */}
-          <div className="lg:col-span-8 space-y-5">
+          <div className="lg:col-span-8 space-y-5 animate-fade-in-up">
             {/* Top Category Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-amber-100/70 border border-amber-300/80 text-xs font-semibold text-amber-900 tracking-wide">
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
               <span>E-commerce Operations Support, Executive Virtual Assistant</span>
             </div>
 
-            {/* Name Heading */}
+            {/* Name Heading with Smooth Presence */}
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-stone-900 leading-[1.08]">
               Anukam
               <br />
@@ -271,7 +272,7 @@ export const CondensedHero: React.FC<CondensedHeroProps> = ({ onExploreClick }) 
               I act as a trusted operational right hand for co-founders and scaling brands, taking administrative friction completely off your plate so you can focus on vision and revenue. From executing day-to-day executive coordination, e-commerce storefront management, and workflow automation to high-converting Canva creatives, Printful mockups, and customer retention, I deliver consistent results with zero hand-holding.
             </p>
 
-            {/* Skill / Capability Chips */}
+            {/* Skill / Capability Chips with Hover Tint */}
             <div className="pt-1 flex flex-wrap gap-2">
               {[
                 'Co-Founder Executive Support',
@@ -284,18 +285,18 @@ export const CondensedHero: React.FC<CondensedHeroProps> = ({ onExploreClick }) 
               ].map((chip, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1 rounded-md bg-white border border-stone-200 text-xs font-medium text-stone-700 shadow-2xs hover:border-amber-400 transition-colors"
+                  className="px-3 py-1 rounded-md bg-white border border-stone-200 text-xs font-medium text-stone-700 shadow-2xs hover:border-amber-400 hover:text-stone-950 transition-colors"
                 >
                   {chip}
                 </span>
               ))}
             </div>
 
-            {/* Clean minimal Explore trigger */}
+            {/* Clean minimal Explore trigger with Hover Lift */}
             <div className="pt-2">
               <button
                 onClick={onExploreClick}
-                className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-stone-900 bg-amber-400 hover:bg-amber-500 active:scale-95 transition-all rounded-xl shadow-xs cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-stone-900 bg-amber-400 hover:bg-amber-500 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all rounded-xl shadow-xs cursor-pointer touch-manipulation"
               >
                 <span>Explore Work Samples</span>
                 <ArrowDown className="w-3.5 h-3.5" />
@@ -304,7 +305,7 @@ export const CondensedHero: React.FC<CondensedHeroProps> = ({ onExploreClick }) 
           </div>
         </div>
 
-        {/* 4 Interactive Metric Cards (Mobile Touch-Friendly, Staggered Slide-In & Animated Counter) */}
+        {/* 4 Interactive Metric Cards (Desktop Hover Lift & Staggered Motion) */}
         <div ref={statsSectionRef} className="mt-12 pt-8 border-t border-stone-200/90 overflow-hidden">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4 p-0.5">
             {metrics.map((m, index) => {
@@ -325,27 +326,33 @@ export const CondensedHero: React.FC<CondensedHeroProps> = ({ onExploreClick }) 
                 >
                   <div
                     onClick={() => setActiveMetric(isSelected ? null : index)}
-                    className={`h-full p-4 rounded-xl border transition-all cursor-pointer select-none active:scale-95 ${
+                    className={`h-full flex flex-col justify-between p-3.5 sm:p-4 rounded-xl border transition-all duration-300 cursor-pointer select-none active:scale-95 hover:-translate-y-1.5 hover:shadow-md ${
                       isSelected
-                        ? 'bg-amber-100/80 border-amber-400 shadow-md ring-2 ring-amber-400/40'
-                        : 'bg-white/80 hover:bg-white border-stone-200 hover:border-amber-400 hover:shadow-sm'
+                        ? 'bg-amber-100/85 border-amber-400 shadow-md ring-2 ring-amber-400/40'
+                        : 'bg-white/85 hover:bg-white border-stone-200 hover:border-amber-400/90 hover:shadow-sm'
                     }`}
                   >
-                    <div className="flex items-center justify-between text-[11px] font-medium text-stone-500 mb-1">
-                      <span>{m.label}</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 opacity-60"></span>
-                    </div>
-                    
-                    <div className="text-2xl sm:text-3xl font-bold font-display text-stone-900 mt-0.5 tabular-nums">
-                      {displayVal}{' '}
-                      <span className="text-amber-700 text-base font-sans font-semibold">{m.unit}</span>
+                    <div>
+                      {/* Uniform Header Height so numbers start on the exact same row */}
+                      <div className="flex items-center justify-between text-[10.5px] sm:text-[11px] font-semibold text-stone-600 mb-1.5 h-5">
+                        <span className="truncate whitespace-nowrap" title={m.label}>{m.label}</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500/70 shrink-0 ml-1"></span>
+                      </div>
+                      
+                      {/* Main Statistic Number on single line */}
+                      <div className="flex items-baseline gap-1.5 text-2xl sm:text-3xl font-bold font-display text-stone-900 mt-0.5 tabular-nums whitespace-nowrap">
+                        <span>{displayVal}</span>
+                        <span className="text-amber-700 text-sm sm:text-base font-sans font-semibold">{m.unit}</span>
+                      </div>
+
+                      {/* Detail Text with uniform height for row alignment */}
+                      <div className="text-[11px] text-stone-700 font-medium mt-1.5 min-h-[2.2rem] flex items-center leading-snug">
+                        {m.detail}
+                      </div>
                     </div>
 
-                    <div className="text-[11px] text-stone-700 font-medium mt-1 leading-snug">
-                      {m.detail}
-                    </div>
-
-                    <div className="text-[10px] text-stone-500 mt-1 pt-1.5 border-t border-stone-100">
+                    {/* Subtext Footer strictly pinned to bottom */}
+                    <div className="text-[10px] text-stone-500 mt-2 pt-1.5 border-t border-stone-100/90 leading-tight">
                       {m.subtext}
                     </div>
                   </div>

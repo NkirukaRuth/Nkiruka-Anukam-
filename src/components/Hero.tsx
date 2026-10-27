@@ -149,7 +149,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreWork, onOpenContact, onOpen
               <p className="text-3xl lg:text-4xl font-bold text-zinc-950 tracking-tight tabular-nums">
                 9.20x
               </p>
-              <p className="text-xs text-zinc-500 mt-1">Modeled from ₦2,784 CPA efficiency</p>
+              <p className="text-xs text-zinc-500 mt-1">Modeled from CPA efficiency</p>
             </div>
 
             <div className="p-5 rounded-xl bg-white border border-zinc-200/70 shadow-2xs">

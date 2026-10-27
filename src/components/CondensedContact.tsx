@@ -13,8 +13,10 @@ export const CondensedContact: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [briefSummary, setBriefSummary] = useState('');
 
-  // Target destinations & Formspree Endpoint
-  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mvkkkvkl';
+  const [honeypot, setHoneypot] = useState('');
+
+  // Target destinations & Secure Server-Side Proxy Endpoint
+  const CONTACT_API_ENDPOINT = '/api/contact';
   const targetEmail = 'anukamnkirukaruth@gmail.com';
   const whatsappUrl = "https://wa.me/2348066225117?text=Hi%20Ruth%2C%20I%20reviewed%20your%20portfolio%20and%20would%20love%20to%20discuss%20a%20project";
   const gmailQuick = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(targetEmail)}&su=${encodeURIComponent('Project Inquiry - E-Commerce & Executive Support')}&body=${encodeURIComponent('Hi Ruth,\n\nI reviewed your portfolio and would like to discuss an opportunity with you.\n\nProject Scope:\nTimeline:\n\nBest regards,')}`;
@@ -41,31 +43,29 @@ export const CondensedContact: React.FC = () => {
     setBriefSummary(formattedSummary);
 
     try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
+      const response = await fetch(CONTACT_API_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
         body: JSON.stringify({
-          name,
-          email,
+          name: name.trim(),
+          email: email.trim(),
           service,
           timeline,
-          message,
-          _subject: `[Portfolio Direct Brief] ${service} - ${name || 'Client Inquiry'}`,
+          message: message.trim(),
+          website_url: honeypot, // Hidden spam trap
         }),
       });
 
-      if (response.ok) {
+      const data = await response.json().catch(() => null);
+
+      if (response.ok && data?.success !== false) {
         setStatus('success');
       } else {
-        const data = await response.json().catch(() => null);
-        if (data && data.errors && data.errors.length > 0) {
-          setErrorMessage(data.errors.map((err: { message: string }) => err.message).join(', '));
-        } else {
-          setErrorMessage('Unable to submit the brief right now. You can dispatch via Gmail or WhatsApp below.');
-        }
+        const errorText = data?.error || data?.message || 'Unable to submit the brief right now. You can dispatch via Gmail or WhatsApp below.';
+        setErrorMessage(errorText);
         setStatus('error');
       }
     } catch {
@@ -225,8 +225,22 @@ export const CondensedContact: React.FC = () => {
               </button>
             </div>
           ) : (
-            <form action={FORMSPREE_ENDPOINT} method="POST" onSubmit={handleSendBrief} className="space-y-4">
-              {/* Error Alert if Formspree or network fails */}
+            <form action={CONTACT_API_ENDPOINT} method="POST" onSubmit={handleSendBrief} className="space-y-4">
+              {/* Invisible Honeypot field for automatic bot spam rejection */}
+              <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
+                <label htmlFor="website_url">Website URL (leave empty)</label>
+                <input
+                  id="website_url"
+                  type="text"
+                  name="website_url"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
+
+              {/* Error Alert if backend validation or network fails */}
               {status === 'error' && (
                 <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-300 text-xs text-amber-900 flex items-start gap-2.5">
                   <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />

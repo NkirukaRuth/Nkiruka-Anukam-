@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, Send, Sparkles, User, Briefcase, GraduationCap, Wrench, MessageSquareText } from 'lucide-react';
 
 interface CondensedNavbarProps {
@@ -7,14 +7,39 @@ interface CondensedNavbarProps {
 
 export const CondensedNavbar: React.FC<CondensedNavbarProps> = ({ onContactClick }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('about');
 
   const navLinks = [
-    { name: 'About', href: '#about', icon: User },
-    { name: 'Work Samples', href: '#work', icon: Briefcase },
-    { name: 'Certifications', href: '#certifications', icon: GraduationCap },
-    { name: 'Toolkit', href: '#tools', icon: Wrench },
-    { name: 'Contact', href: '#contact', icon: MessageSquareText },
+    { id: 'about', name: 'About', href: '#about', icon: User },
+    { id: 'work', name: 'Work Samples', href: '#work', icon: Briefcase },
+    { id: 'certifications', name: 'Certifications', href: '#certifications', icon: GraduationCap },
+    { id: 'tools', name: 'Toolkit', href: '#tools', icon: Wrench },
+    { id: 'contact', name: 'Contact', href: '#contact', icon: MessageSquareText },
   ];
+
+  // Scroll Spy to highlight active navigation link
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const offset = 180;
+
+      for (let i = navLinks.length - 1; i >= 0; i--) {
+        const id = navLinks[i].id;
+        const el = document.getElementById(id);
+        if (el) {
+          const top = el.offsetTop - offset;
+          if (scrollY >= top) {
+            setActiveSection(id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLinkClick = (href: string) => {
     setIsMobileMenuOpen(false);
@@ -30,35 +55,51 @@ export const CondensedNavbar: React.FC<CondensedNavbarProps> = ({ onContactClick
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#FAF6F0]/95 backdrop-blur-md border-b border-stone-200/80 transition-all">
+    <header className="sticky top-0 z-50 w-full bg-[#FAF6F0]/95 backdrop-blur-md border-b border-stone-200/80 transition-all shadow-2xs">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 h-16">
         {/* Brand Name */}
         <a 
           href="#top" 
-          className="font-display text-xl sm:text-2xl font-bold tracking-tight text-stone-900 hover:text-stone-700 transition-colors"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="font-display text-xl sm:text-2xl font-bold tracking-tight text-stone-900 hover:text-amber-800 transition-colors group flex items-center gap-1"
         >
-          Ruth<span className="text-amber-500">.</span>
+          <span>Ruth</span>
+          <span className="text-amber-500 group-hover:scale-125 transition-transform inline-block">.</span>
         </a>
 
-        {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-7 text-xs sm:text-sm font-medium text-stone-600">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="hover:text-stone-950 transition-colors"
-            >
-              {link.name}
-            </a>
-          ))}
+        {/* Desktop Nav Links with Active State Highlights */}
+        <nav className="hidden md:flex items-center gap-2 text-xs sm:text-sm font-medium">
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLinkClick(link.href);
+                }}
+                className={`px-3 py-1.5 rounded-lg transition-all duration-200 relative ${
+                  isActive
+                    ? 'text-stone-950 font-bold bg-amber-100/80 border border-amber-300/70 shadow-2xs'
+                    : 'text-stone-600 hover:text-stone-950 hover:bg-stone-200/40'
+                }`}
+              >
+                {link.name}
+              </a>
+            );
+          })}
         </nav>
 
         {/* Desktop & Mobile Actions */}
         <div className="flex items-center gap-2">
-          {/* Send Direct Brief Button */}
+          {/* Send Direct Brief Button with Gentle Lift */}
           <button
             onClick={handleDirectBriefClick}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2 text-xs font-semibold text-stone-900 bg-amber-400 hover:bg-amber-500 active:scale-95 transition-all rounded-xl cursor-pointer shadow-2xs touch-manipulation"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2 text-xs font-semibold text-stone-900 bg-amber-400 hover:bg-amber-500 hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all rounded-xl cursor-pointer shadow-2xs touch-manipulation"
           >
             <Send className="w-3.5 h-3.5 text-stone-950" />
             <span>Send Direct Brief</span>
@@ -71,31 +112,36 @@ export const CondensedNavbar: React.FC<CondensedNavbarProps> = ({ onContactClick
             aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {isMobileMenuOpen ? (
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5 transition-transform rotate-90 duration-200" />
             ) : (
-              <Menu className="w-5 h-5" />
+              <Menu className="w-5 h-5 transition-transform duration-200" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Interactive Navigation Drawer */}
+      {/* Mobile Interactive Navigation Drawer with Smooth Slide/Fade */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-b border-stone-200/90 bg-[#FAF6F0] px-4 pt-3 pb-5 shadow-lg animate-fade-in">
+        <div className="md:hidden border-b border-stone-200/90 bg-[#FAF6F0] px-4 pt-3 pb-5 shadow-xl animate-fade-in-up">
           <div className="text-[11px] font-mono uppercase tracking-wider text-amber-700 mb-2 px-2 font-semibold">
             Quick Navigation
           </div>
           <div className="flex flex-col space-y-1">
             {navLinks.map((link) => {
               const Icon = link.icon;
+              const isActive = activeSection === link.id;
               return (
                 <button
                   key={link.name}
                   onClick={() => handleLinkClick(link.href)}
-                  className="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-stone-800 hover:bg-stone-100 hover:text-stone-950 active:bg-amber-100/70 text-sm font-medium transition-colors text-left touch-manipulation"
+                  className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm transition-all text-left touch-manipulation ${
+                    isActive
+                      ? 'bg-amber-100/90 text-amber-950 font-bold border-l-4 border-amber-500'
+                      : 'text-stone-800 hover:bg-stone-100 hover:text-stone-950 active:bg-amber-100/70 font-medium'
+                  }`}
                 >
                   <span className="flex items-center gap-3">
-                    <Icon className="w-4 h-4 text-amber-600" />
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-amber-700' : 'text-amber-600'}`} />
                     <span>{link.name}</span>
                   </span>
                   <span className="text-xs text-stone-400">→</span>
@@ -108,7 +154,7 @@ export const CondensedNavbar: React.FC<CondensedNavbarProps> = ({ onContactClick
           <div className="mt-3 pt-3 border-t border-stone-200/80">
             <button
               onClick={handleDirectBriefClick}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-stone-950 font-bold text-xs tracking-wide shadow-xs active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-2 touch-manipulation"
+              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-stone-950 font-bold text-xs tracking-wide shadow-xs active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-2 touch-manipulation"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Open Direct Brief Form</span>
