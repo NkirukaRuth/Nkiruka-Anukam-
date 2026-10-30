@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, MessageSquare, Linkedin, Copy, Check, Send, Sparkles, ExternalLink, Loader2, AlertCircle } from 'lucide-react';
 import { TECH_TOOLS } from '../data/condensedData';
+import { trackEvent } from '../utils/analytics';
 
 export const CondensedContact: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -63,6 +64,10 @@ export const CondensedContact: React.FC = () => {
 
       if (response.ok && data?.success !== false) {
         setStatus('success');
+        trackEvent('generate_lead', {
+          service_category: service,
+          timeline: timeline,
+        });
       } else {
         const errorText = data?.error || data?.message || 'Unable to submit the brief right now. You can dispatch via Gmail or WhatsApp below.';
         setErrorMessage(errorText);
